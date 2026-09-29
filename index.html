@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Son La Smart Learning - Nền Tảng Học Tập Thông Minh</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- QRCode library for sharing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="h-full bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans antialiased flex flex-col transition-colors duration-200">
+
+    <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-emerald-600 to-teal-500 text-white p-2.5 rounded-xl shadow-md flex items-center justify-center">
+                    <i class="fa-solid fa-graduation-cap text-xl"></i>
+                </div>
+                <div>
+                    <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">Son La Smart Learning</span>
+                    <span class="block text-xs text-slate-500 dark:text-slate-400">Nền tảng Giáo dục Số Thông Minh</span>
+                </div>
+            </div>
+
+            <!-- Navigation & Actions -->
+            <div class="flex items-center space-x-3">
+                <button onclick="openShareModal()" class="hidden sm:inline-flex items-center px-3.5 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 font-medium text-sm hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition border border-emerald-200 dark:border-emerald-800">
+                    <i class="fa-solid fa-share-nodes mr-2"></i> Chia sẻ truy cập
+                </button>
+
+                <!-- Profile Switcher dropdown -->
+                <div class="relative">
+                    <button onclick="toggleUserMenu()" id="userMenuBtn" class="flex items-center space-x-2 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+                        <img id="currentUserAvatar" src="https://placehold.co/40x40/10b981/ffffff?text=HS" alt="Avatar" class="w-9 h-9 rounded-full object-cover border-2 border-emerald-500">
+                        <div class="text-left hidden md:block">
+                            <div id="currentUserName" class="text-xs font-bold leading-tight">Lò Văn Hùng</div>
+                            <div id="currentUserRole" class="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">Học sinh (Lớp 11A)</div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-xs text-slate-400 ml-1"></i>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div id="userDropdown" class="hidden absolute right-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 py-1.5 z-50">
+                        <div class="px-4 py-2 border-b border-slate-100 dark:border-slate-700">
+                            <p class="text-xs text-slate-500">Chuyển đổi tài khoản mẫu:</p>
+                        </div>
+                        <button onclick="switchRole('student')" class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center space-x-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            <span>Học sinh (Lò Văn Hùng)</span>
+                        </button>
+                        <button onclick="switchRole('teacher')" class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center space-x-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            <span>Giáo viên (Cô Minh Thư)</span>
+                        </button>
+                        <button onclick="switchRole('parent')" class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center space-x-2">
+                            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                            <span>Phụ huynh (Ông Lò Văn A)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Theme Toggle -->
+                <button onclick="toggleTheme()" class="p-2.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+                    <i class="fa-solid fa-moon dark:hidden"></i>
+                    <i class="fa-solid fa-sun hidden dark:block text-amber-400"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="lg:col-span-1 space-y-4">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-700">
+                <nav class="space-y-1">
+                    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl font-medium text-sm transition bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400">
+                        <i class="fa-solid fa-house-chimney w-5"></i>
+                        <span>Trang Chủ & Tổng Quan</span>
+                    </button>
+                    <button onclick="switchTab('lessons')" id="nav-lessons" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl font-medium text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
+                        <i class="fa-solid fa-book-open w-5"></i>
+                        <span>Bài Học Số (Sơn La)</span>
+                    </button>
+                    <button onclick="switchTab('ai')" id="nav-ai" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl font-medium text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
+                        <i class="fa-solid fa-robot w-5"></i>
+                        <span>Trợ Lý Ảo AI 24/7</span>
+                    </button>
+                    <button onclick="switchTab('community')" id="nav-community" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl font-medium text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
+                        <i class="fa-solid fa-comments w-5"></i>
+                        <span>Diễn Đàn Thảo Luận</span>
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Quick Access / Access Status Widget -->
+            <div class="bg-gradient-to-br from-emerald-600 to-teal-700 text-white rounded-2xl p-5 shadow-lg relative overflow-hidden">
+                <div class="absolute -right-4 -bottom-4 opacity-10 text-8xl">
+                    <i class="fa-solid fa-globe"></i>
+                </div>
+                <h3 class="font-bold text-base mb-1">Mở Cửa Truy Cập</h3>
+                <p class="text-xs text-emerald-100 mb-4">Chia sẻ nền tảng học tập này cho học sinh và giáo viên toàn tỉnh Sơn La.</p>
+                <button onclick="openShareModal()" class="w-full py-2.5 px-4 bg-white text-emerald-700 font-semibold text-xs rounded-xl shadow hover:bg-emerald-50 transition flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-qrcode"></i>
+                    <span>Tạo Mã QR & Link Chia Sẻ</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Dynamic Content Area -->
+        <section class="lg:col-span-3 space-y-6">
+
+            <!-- TAB 1: DASHBOARD -->
+            <div id="tab-dashboard" class="space-y-6">
+                <!-- Welcome Banner -->
+                <div class="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl p-6 text-white shadow-md relative overflow-hidden">
+                    <div class="relative z-10">
+                        <span class="bg-white/20 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Hệ thống chính thức</span>
+                        <h1 id="welcomeTitle" class="text-2xl font-bold mt-2">Xin chào, Lò Văn Hùng! 👋</h1>
+                        <p id="welcomeSub" class="text-emerald-100 text-sm mt-1">Tiếp tục hành trình chinh phục tri thức số tại các điểm trường Sơn La.</p>
+                        <div class="mt-4 flex flex-wrap gap-3">
+                            <button onclick="switchTab('lessons')" class="px-4 py-2 bg-white text-emerald-700 font-medium text-xs rounded-xl shadow hover:bg-emerald-50 transition">
+                                <i class="fa-solid fa-play mr-1.5"></i> Tiếp tục học bài
+                            </button>
+                            <button onclick="switchTab('ai')" class="px-4 py-2 bg-emerald-700/60 border border-white/30 text-white font-medium text-xs rounded-xl hover:bg-emerald-700 transition">
+                                <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Hỏi Trợ Lý AI
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 rounded-xl flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-book"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Bài học hoàn thành</p>
+                            <h4 class="text-xl font-bold text-slate-800 dark:text-white">12 / 24</h4>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-teal-100 dark:bg-teal-900/40 text-teal-600 rounded-xl flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Thời gian học tập</p>
+                            <h4 class="text-xl font-bold text-slate-800 dark:text-white">18.5 giờ</h4>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/40 text-amber-600 rounded-xl flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Điểm tích lũy</p>
+                            <h4 class="text-xl font-bold text-slate-800 dark:text-white">950 XP</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activities / Public Feed -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <h3 class="font-bold text-base mb-4 flex items-center justify-between">
+                        <span>Hoạt động cộng đồng gần đây</span>
+                        <span class="text-xs text-emerald-600 dark:text-emerald-400 font-normal">Trực tuyến (248 người)</span>
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50">
+                            <img src="https://placehold.co/40x40/3b82f6/ffffff?text=MT" class="w-9 h-9 rounded-full object-cover">
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <h5 class="text-xs font-bold">Cô Minh Thư (THPT Chuyên Sơn La)</h5>
+                                    <span class="text-[10px] text-slate-400">10 phút trước</span>
+                                </div>
+                                <p class="text-xs text-slate-600 dark:text-slate-300 mt-1">Đã cập nhật bài giảng mới: "Hình học không gian vector trong không gian Oxyz". Mời các em học sinh vào ôn tập.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50">
+                            <img src="https://placehold.co/40x40/10b981/ffffff?text=LH" class="w-9 h-9 rounded-full object-cover">
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <h5 class="text-xs font-bold">Lò Văn Hùng</h5>
+                                    <span class="text-[10px] text-slate-400">25 phút trước</span>
+                                </div>
+                                <p class="text-xs text-slate-600 dark:text-slate-300 mt-1">Đã hoàn thành bài kiểm tra Toán 11 với số điểm 9.5/10. 🎉</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: LESSONS -->
+            <div id="tab-lessons" class="hidden space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold">Kho Bài Học & Tài Liệu Số</h2>
+                        <p class="text-xs text-slate-500">Chương trình chuẩn bám sát giáo dục tỉnh Sơn La</p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <select id="gradeFilter" onchange="filterLessons()" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs rounded-xl px-3 py-2 outline-none">
+                            <option value="all">Tất cả các khối</option>
+                            <option value="10">Khối 10</option>
+                            <option value="11">Khối 11</option>
+                            <option value="12">Khối 12</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="lessonsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Lesson 1 -->
+                    <div class="lesson-card bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between" data-grade="11">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2.5 py-1 bg-emerald-50 dark:bg-emerald-900/40 text-emerald-600 text-[10px] font-bold rounded-lg uppercase">Toán học 11</span>
+                                <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i> 45 phút</span>
+                            </div>
+                            <h4 class="font-bold text-sm mb-1">Hàm số lượng giác và phương trình lượng giác</h4>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2">Nghiên cứu tính tuần hoàn, đồ thị và cách giải các phương trình lượng giác cơ bản.</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                            <span class="text-[10px] text-emerald-600 font-semibold">Tiến độ: 80%</span>
+                            <button onclick="openLessonDetail('Hàm số lượng giác', '11')" class="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs hover:bg-emerald-700 transition">Vào học</button>
+                        </div>
+                    </div>
+
+                    <!-- Lesson 2 -->
+                    <div class="lesson-card bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between" data-grade="12">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2.5 py-1 bg-blue-50 dark:bg-blue-900/40 text-blue-600 text-[10px] font-bold rounded-lg uppercase">Vật lý 12</span>
+                                <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i> 60 phút</span>
+                            </div>
+                            <h4 class="font-bold text-sm mb-1">Dao động cơ và các đặc trưng của dao động điều hòa</h4>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2">Khảo sát phương trình ly độ, vận tốc, gia tốc và năng lượng trong dao động điều hòa.</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                            <span class="text-[10px] text-slate-400 font-semibold">Chưa bắt đầu</span>
+                            <button onclick="openLessonDetail('Dao động cơ', '12')" class="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs hover:bg-emerald-700 transition">Vào học</button>
+                        </div>
+                    </div>
+
+                    <!-- Lesson 3 -->
+                    <div class="lesson-card bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between" data-grade="10">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2.5 py-1 bg-amber-50 dark:bg-amber-900/40 text-amber-600 text-[10px] font-bold rounded-lg uppercase">Ngữ văn 10</span>
+                                <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i> 45 phút</span>
+                            </div>
+                            <h4 class="font-bold text-sm mb-1">Sử thi Đăm Săn - Khát vọng cộng đồng Tây Nguyên</h4>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2">Phân tích nghệ thuật miêu tả sử thi hùng tráng và vẻ đẹp của người anh hùng Đăm Săn.</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                            <span class="text-[10px] text-emerald-600 font-semibold">Hoàn thành 100%</span>
+                            <button onclick="openLessonDetail('Sử thi Đăm Săn', '10')" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg text-xs hover:bg-slate-200 transition">Ôn tập</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: AI ASSISTANT -->
+            <div id="tab-ai" class="hidden space-y-4">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col h-[520px]">
+                    <div class="flex items-center space-x-3 pb-4 border-b border-slate-100 dark:border-slate-700">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm">Trợ Lý Ảo Son La Smart AI</h3>
+                            <p class="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">Luôn sẵn sàng hỗ trợ giải đáp bài tập 24/7</p>
+                        </div>
+                    </div>
+
+                    <!-- Chat Messages Box -->
+                    <div id="chatMessages" class="flex-1 overflow-y-auto py-4 space-y-3 pr-2">
+                        <div class="flex items-start space-x-2">
+                            <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs flex-shrink-0">AI</div>
+                            <div class="bg-slate-100 dark:bg-slate-700/60 rounded-2xl px-4 py-3 text-xs max-w-[80%] leading-relaxed">
+                                Chào bạn! Tôi là trợ lý học tập AI của Sơn La Smart Learning. Bạn cần tôi giảng giải bài toán, định luật vật lý hay ngữ văn nào hôm nay không?
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Input -->
+                    <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center space-x-2">
+                        <input type="text" id="chatInput" placeholder="Nhập câu hỏi của bạn..." onkeypress="if(event.key==='Enter') sendAIMessage()" class="flex-1 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-xs outline-none focus:border-emerald-500">
+                        <button onclick="sendAIMessage()" class="px-4 py-2.5 bg-emerald-600 text-white rounded-xl text-xs font-semibold hover:bg-emerald-700 transition">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: COMMUNITY -->
+            <div id="tab-community" class="hidden space-y-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl font-bold">Diễn Đàn Thảo Luận Học Tập</h2>
+                        <p class="text-xs text-slate-500">Giao lưu, đặt câu hỏi và giải đáp cùng học sinh, giáo viên Sơn La</p>
+                    </div>
+                    <button onclick="openNewPostModal()" class="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-semibold hover:bg-emerald-700 transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Đăng câu hỏi</span>
+                    </button>
+                </div>
+
+                <div id="postsList" class="space-y-4">
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <img src="https://placehold.co/40x40/10b981/ffffff?text=TD" class="w-9 h-9 rounded-full object-cover">
+                                <div>
+                                    <h5 class="text-xs font-bold">Tòng Văn Đức</h5>
+                                    <span class="text-[10px] text-slate-400">THPT Tô Hiệu, Sơn La • 1 giờ trước</span>
+                                </div>
+                            </div>
+                            <span class="px-2 py-0.5 bg-emerald-50 dark:bg-emerald-900/40 text-emerald-600 text-[10px] font-bold rounded">Thảo luận Toán</span>
+                        </div>
+                        <p class="text-xs text-slate-700 dark:text-slate-300">Mọi người ơi, cho mình hỏi câu bất đẳng thức Cauchy ở đề thi thử khối 10 vừa rồi giải theo cách thêm bớt như thế nào là nhanh nhất vậy?</p>
+                        <div class="flex items-center space-x-4 pt-2 border-t border-slate-100 dark:border-slate-700 text-xs text-slate-500">
+                            <button class="hover:text-emerald-600 flex items-center space-x-1"><i class="fa-regular fa-thumbs-up"></i> <span>14 Thích</span></button>
+                            <button class="hover:text-emerald-600 flex items-center space-x-1"><i class="fa-regular fa-comment"></i> <span>5 Trả lời</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <div id="shareModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="font-bold text-base flex items-center space-x-2">
+                    <i class="fa-solid fa-qrcode text-emerald-600"></i>
+                    <span>Truy Cập Nền Tảng</span>
+                </h3>
+                <button onclick="closeShareModal()" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p class="text-xs text-slate-500">Quét mã QR bên dưới bằng điện thoại hoặc sao chép liên kết để chia sẻ cho bạn bè và giáo viên cùng tham gia.</p>
+            
+            <div class="flex flex-col items-center justify-center py-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800">
+                <div id="qrcode" class="p-3 bg-white rounded-xl shadow-sm"></div>
+                <span class="text-[10px] text-slate-400 mt-2">Son La Smart Learning Portal</span>
+            </div>
+
+            <div class="space-y-1">
+                <label class="text-[10px] font-semibold text-slate-500">Liên kết truy cập công khai:</label>
+                <div class="flex items-center space-x-2">
+                    <input type="text" id="shareUrlInput" readonly value="" class="flex-1 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 text-xs outline-none text-slate-600 dark:text-slate-300">
+                    <button onclick="copyShareLink()" class="px-3 py-2 bg-emerald-600 text-white rounded-xl text-xs font-semibold hover:bg-emerald-700 transition">Sao chép</button>
+                </div>
+            </div>
+            <div class="pt-2">
+                <button onclick="closeShareModal()" class="w-full py-2.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold hover:bg-slate-200 transition">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lesson Detail Modal -->
+    <div id="lessonModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 id="modalLessonTitle" class="font-bold text-base">Chi Tiết Bài Học</h3>
+                <button onclick="closeLessonModal()" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-3 text-xs text-slate-600 dark:text-slate-300">
+                <p>Nội dung chi tiết bài học bao gồm video giảng dạy từ giáo viên cốt cán tỉnh Sơn La, hệ thống bài tập trắc nghiệm tự luyện tương tác và tài liệu tóm tắt lý thuyết PDF.</p>
+                <div class="p-4 bg-emerald-50 dark:bg-emerald-900/30 rounded-xl border border-emerald-100 dark:border-emerald-800/50">
+                    <h5 class="font-bold text-emerald-700 dark:text-emerald-300 mb-1">Mục tiêu bài học:</h5>
+                    <ul class="list-disc list-inside space-y-1 text-emerald-900 dark:text-emerald-200">
+                        <li>Hiểu vững bản chất lý thuyết cốt lõi.</li>
+                        <li>Vận dụng giải thành thạo từ 10-15 bài tập mẫu.</li>
+                        <li>Tham gia thảo luận và đặt câu hỏi trực tiếp với giáo viên bộ môn.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-2 flex justify-end space-x-2">
+                <button onclick="closeLessonModal()" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold hover:bg-slate-200 transition">Đóng</button>
+                <button onclick="alertModal('Đã bắt đầu học thành công! Hệ thống đã ghi nhận tiến độ của bạn.')" class="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-semibold hover:bg-emerald-700 transition">Bắt đầu học ngay</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Notification / Message Box -->
+    <div id="customModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-sm w-full p-5 shadow-xl border border-slate-200 dark:border-slate-700 text-center space-y-3">
+            <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-xl">
+                <i class="fa-solid fa-bell"></i>
+            </div>
+            <h4 class="font-bold text-sm">Thông Báo Hệ Thống</h4>
+            <p id="customModalText" class="text-xs text-slate-500 dark:text-slate-300"></p>
+            <button onclick="closeAlertModal()" class="w-full py-2 bg-emerald-600 text-white rounded-xl text-xs font-semibold hover:bg-emerald-700 transition">Đã hiểu</button>
+        </div>
+    </div>
+
+    <script>
+        // Users profiles
+        const users = {
+            student: { name: 'Lò Văn Hùng', role: 'Học sinh (Lớp 11A)', avatar: 'https://placehold.co/40x40/10b981/ffffff?text=HS' },
+            teacher: { name: 'Cô Minh Thư', role: 'Giáo viên Toán (THPT Chuyên)', avatar: 'https://placehold.co/40x40/3b82f6/ffffff?text=GV' },
+            parent: { name: 'Ông Lò Văn A', role: 'Phụ huynh học sinh', avatar: 'https://placehold.co/40x40/f59e0b/ffffff?text=PH' }
+        };
+
+        let currentRoleKey = 'student';
+
+        // Toggle User Dropdown
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('hidden');
+        }
+
+        // Switch User Role
+        function switchRole(roleKey) {
+            currentRoleKey = roleKey;
+            const user = users[roleKey];
+            document.getElementById('currentUserName').innerText = user.name;
+            document.getElementById('currentUserRole').innerText = user.role;
+            document.getElementById('currentUserAvatar').src = user.avatar;
+            document.getElementById('welcomeTitle').innerText = `Xin chào, ${user.name}! 👋`;
+            document.getElementById('userDropdown').classList.add('hidden');
+            alertModal(`Đã chuyển sang vai trò: ${user.role}`);
+        }
+
+        // Theme Toggle
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // Tab Navigation
+        function switchTab(tabId) {
+            ['dashboard', 'lessons', 'ai', 'community'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                document.getElementById(`nav-${t}`).classList.remove('bg-emerald-50', 'dark:bg-emerald-900/30', 'text-emerald-600', 'dark:text-emerald-400');
+                document.getElementById(`nav-${t}`).classList.add('text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-100', 'dark:hover:bg-slate-700');
+            });
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            activeNav.classList.remove('text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-100', 'dark:hover:bg-slate-700');
+            activeNav.classList.add('bg-emerald-50', 'dark:bg-emerald-900/30', 'text-emerald-600', 'dark:text-emerald-400');
+        }
+
+        // Filter Lessons
+        function filterLessons() {
+            const grade = document.getElementById('gradeFilter').value;
+            const cards = document.querySelectorAll('.lesson-card');
+            cards.forEach(card => {
+                if(grade === 'all' || card.dataset.grade === grade) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Lesson Detail Modal
+        function openLessonDetail(title, grade) {
+            document.getElementById('modalLessonTitle').innerText = `${title} (Khối ${grade})`;
+            document.getElementById('lessonModal').classList.remove('hidden');
+        }
+        function closeLessonModal() {
+            document.getElementById('lessonModal').classList.add('hidden');
+        }
+
+        // AI Assistant chat handler
+        function sendAIMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if(!text) return;
+
+            const chatMessages = document.getElementById('chatMessages');
+            
+            // User bubble
+            chatMessages.innerHTML += `
+                <div class="flex items-start justify-end space-x-2">
+                    <div class="bg-emerald-600 text-white rounded-2xl px-4 py-3 text-xs max-w-[80%] leading-relaxed">${escapeHtml(text)}</div>
+                    <div class="w-8 h-8 rounded-full bg-slate-300 dark:bg-slate-600 flex items-center justify-center text-xs flex-shrink-0">Bạn</div>
+                </div>
+            `;
+            input.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // AI Simulated response
+            setTimeout(() => {
+                let aiReply = "Cảm ơn câu hỏi rất hay của bạn! Về vấn đề này trong chương trình học tại Sơn La, chúng ta cần lưu ý các bước giải quyết cốt lõi như sau...";
+                if(text.toLowerCase().includes('toán') || text.toLowerCase().includes('phương trình')) {
+                    aiReply = "Đối với bài toán này, bạn hãy áp dụng công thức định nghĩa cơ bản và kiểm tra kỹ các điều kiện xác định trước khi biến đổi nhé!";
+                } else if(text.toLowerCase().includes('sơn la')) {
+                    aiReply = "Tỉnh Sơn La chúng ta hiện nay đang đẩy mạnh chuyển đổi số giáo dục toàn diện tại các trường vùng cao và thành phố để các em học sinh có cơ hội tiếp cận tri thức chất lượng nhất!";
+                }
+
+                chatMessages.innerHTML += `
+                    <div class="flex items-start space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs flex-shrink-0">AI</div>
+                        <div class="bg-slate-100 dark:bg-slate-700/65 rounded-2xl px-4 py-3 text-xs max-w-[80%] leading-relaxed">${aiReply}</div>
+                    </div>
+                `;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 800);
+        }
+
+        // Share & QR Modal
+        let qrInitialized = false;
+        function openShareModal() {
+            const currentUrl = window.location.href;
+            document.getElementById('shareUrlInput').value = currentUrl;
+            document.getElementById('shareModal').classList.remove('hidden');
+
+            if(!qrInitialized) {
+                const qrContainer = document.getElementById('qrcode');
+                qrContainer.innerHTML = '';
+                new QRCode(qrContainer, {
+                    text: currentUrl,
+                    width: 160,
+                    height: 160,
+                    colorDark: "#065f46",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                qrInitialized = true;
+            }
+        }
+        function closeShareModal() {
+            document.getElementById('shareModal').classList.add('hidden');
+        }
+        function copyShareLink() {
+            const input = document.getElementById('shareUrlInput');
+            input.select();
+            document.execCommand('copy');
+            alertModal('Đã sao chép liên kết truy cập vào bộ nhớ tạm!');
+        }
+
+        // Custom Modal Alert (replacing alert())
+        function alertModal(msg) {
+            document.getElementById('customModalText').innerText = msg;
+            document.getElementById('customModal').classList.remove('hidden');
+        }
+        function closeAlertModal() {
+            document.getElementById('customModal').classList.add('hidden');
+        }
+
+        // Helper escape HTML
+        function escapeHtml(text) {
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+    </script>
+</body>
+</html>
